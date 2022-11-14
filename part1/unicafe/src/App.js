@@ -8,9 +8,9 @@ const Button = ({ option, handleClick }) => (
   <button onClick={handleClick}>{option}</button>
 );
 
-const Statistic = ({ text, option }) => (
+const Statistic = ({ text, data }) => (
   <div>
-    {text} {option}
+    {text} {data}
   </div>
 );
 
@@ -24,6 +24,12 @@ const App = () => {
   const increaseNeutral = () => setNeutral(neutral + 1);
   const increaseBad = () => setBad(bad + 1);
 
+  const getTotal = () => good + neutral + bad;
+  const getAverage = () =>
+    good + neutral + bad ? (good - bad) / (good + neutral + bad) : 0; //avoid divisor is 0, show NaN
+  const getPositive = () =>
+    good + neutral + bad ? (good / (good + neutral + bad)) * 100 : 0;
+
   return (
     <div>
       <Header text="give feedback" />
@@ -31,9 +37,12 @@ const App = () => {
       <Button handleClick={increaseNeutral} option="neutral" />
       <Button handleClick={increaseBad} option="bad" />
       <Header text="statistics" />
-      <Statistic text="good" option={good} />
-      <Statistic text="neutral" option={neutral} />
-      <Statistic text="bad" option={bad} />
+      <Statistic text="good" data={good} />
+      <Statistic text="neutral" data={neutral} />
+      <Statistic text="bad" data={bad} />
+      <Statistic text="all" data={getTotal()} />
+      <Statistic text="average" data={getAverage()} />
+      <Statistic text="positive" data={getPositive() + " %"} />
     </div>
   );
 };
